@@ -1,30 +1,30 @@
-var loginCredentials
+var loginCredentials;
 
 function accessAPI() {
-    var data
-        fetch("https://pocket-lockit.herokuapp.com/profiles")
+    fetch("https://pocket-lockit.herokuapp.com/profiles")
         .then(response => response.json())
         // .then(response => {data = response})
-        .then(getData)
+        .then(getData);
 }
-accessAPI()
+accessAPI();
 
-function getData(data){
-    loginCredentials = data
+function getData(data) {
+    loginCredentials = data;
 }
 
-document.querySelector(".submit").addEventListener("click", compareCredentials)
+document.querySelector(".submit").addEventListener("click", compareCredentials);
 
-function compareCredentials(event){
+function compareCredentials(event) {
     event.preventDefault();
-    console.log(event.path[1][0].value)
-    console.log(loginCredentials)
+    if (
+        event.path[1][0].value === loginCredentials.profile[0].username &&
+        event.path[1][1].value === loginCredentials.profile[0].password
+    ) {
+        console.log("true");
+        window.location.href = "/lock.html";
+    } else {
+        console.log("false");
+        document.querySelector(".invalid-login").textContent =
+            "Incorrect Login. Please Try Again";
+    }
 }
-
-
-
-// function compareLogin(res) {
-//     // console.log(res)
-
-//     var usernameVal = document.getElementById("").value;
-// }
