@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Pocket Lockit!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="./style.css" />
+</head>
+
+<body>
+    <p><input type="checkbox" id="light"></p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> <!-- include socket.io client side script -->
+    <script>
+    var socket = io(); //load socket.io-client and connect to the host that serves the page
+    window.addEventListener("load", function(){ //when page loads
+      var lightbox = document.getElementById("light"); 
+      lightbox.addEventListener("change", function() { //add event listener for when checkbox changes
+        socket.emit("light", Number(this.checked)); //send button status to server (as 1 or 0)
+      });
+    });
+    socket.on('light', function (data) { //get button status from client
+      document.getElementById("light").checked = data; //change checkbox according to push button on Raspberry Pi
+      socket.emit("light", data); //send push button status to back to server
+    });
+    </script>
+
+    <header>
+        <img class="splash-logo" src="./pocketlocket-1.png">
+        <h1 class="app-name">Pocket Lockit!</h1>
+    </header>
+    
+    <main class="lock-main">
+        <div class="lock-div">
+            <img id="closed-lock" src="./closedlock.png">
+            <img id="open-lock" class= "hidden" src="./openlock.png">
+        </div>
+        <button class="lock-log">Lock Log</button>
+        <button class="sign-out">Sign Out!</button>
+    </main>
+    
+    <footer>
+        Copyright PocketLockit 2018
+    </footer>
+    
+    <script src="lock.js"></script>
+</body>
+</html>
